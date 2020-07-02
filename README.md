@@ -1,24 +1,55 @@
-# README
+Steps to setup the server:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+$ bundle install
 
-Things you may want to cover:
+$ rails db:create
 
-* Ruby version
+$ rails db:migrate
 
-* System dependencies
+$ rails s
 
-* Configuration
+List of APIs available:
 
-* Database creation
+1. To allocate a number:
+URL: localhost:3000/phones
+Method: POST
+Headers:
+    Content-Type: application/json
+Example Result:
+    {
+        "success": true,
+        "phone": "1361126693"
+    }
 
-* Database initialization
+2. TO allocate a specified number:
+URL: localhost:3000/phones/<desired_number>
+Method: POST
+Headers:
+    Content-Type: application/json
+Example Result:
+    {
+        "success": true,
+        "phone": "9876543212"
+    }
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+3. List all allocated numbers:
+URL: localhost:3000/phones
+Method: GET
+Headers:
+    Content-Type: application/json
+Example Result:
+    {
+        "success": true,
+        "phones": [
+            "9270814332",
+            "4398208184",
+            "9206730045",
+            "7641804983",
+            "1234567890",
+            "1701292643",
+            "1985837686",
+            "5224883536",
+            "1967352727",
+            "1234567898"
+        ]
+    }

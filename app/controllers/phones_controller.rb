@@ -2,7 +2,7 @@ class PhonesController < ApplicationController
     def index
         begin
             @phones = AllotedPhoneNumber.all
-            render json: @phones, status: 200
+            render json: { success: true, phones: @phones.pluck(:alloted_number)}, status: 200
         rescue => exception
             render json: { success: false, errors: exception.message }, status: 400
         end
@@ -14,8 +14,8 @@ class PhonesController < ApplicationController
             existing_number = AllotedPhoneNumber.where(alloted_number: random_phone_number)
         end while existing_number.present?
 
-        alloted_number = AllotedPhoneNumber.create({alloted_number: random_phone_number})
-        render json: alloted_number, status: 200
+        record = AllotedPhoneNumber.create({alloted_number: random_phone_number})
+        render json: { success: true, phone: record.alloted_number }, status: 200
     end
 
     def specific_number
@@ -29,11 +29,15 @@ class PhonesController < ApplicationController
                     existing_number = AllotedPhoneNumber.where(alloted_number: random_phone_number)
                 end while existing_number.present?
 
-                alloted_number = AllotedPhoneNumber.create({alloted_number: random_phone_number})
-                render json: { success: true, message: "The number you requested is already allocated. The following random number is allocated to you.", data: {alloted_number} }, status: 200
+                record = AllotedPhoneNumber.create({alloted_number: random_phone_number})
+                render json: { success: true, message: "The number you requested is already allocated. So the following random number is allocated to you.", phone: record.alloted_number }, status: 200
             else
-                alloted_number = AllotedPhoneNumber.create({alloted_number: phone_number})
-                render json: alloted_number, status: 200
+                record = AllotedPhoneNumber.new({alloted_number: phone_number})
+                if record.save
+                    render json: { success: true, phone: record.alloted_number }, status: 200
+                else
+                    render json: { success: false, errors: record.errors }, status: 400
+                end
             end
         else
             render json: { success: false, errors: "Please provide a number." }, status: 400

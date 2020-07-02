@@ -10,7 +10,12 @@ class AllotedPhoneNumber < ApplicationRecord
         end
     end
 
-    # def self.get_random_phone_number
-    #     rand(1111111111..9999999999)
-    # end
+    def self.get_random_phone_number
+        begin
+            random_phone_number = rand(1111111111..9999999999)
+            existing_number = self.where(alloted_number: random_phone_number)
+        end while existing_number.present?
+        
+        random_phone_number
+    end
 end

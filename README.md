@@ -21,7 +21,7 @@ Example Result:
         "phone": "1361126693"
     }
 
-2. TO allocate a specified number:
+2. To allocate a specified number. Pass your desired number in place of <desired_number>:
 URL: localhost:3000/phones/<desired_number>
 Method: POST
 Headers:

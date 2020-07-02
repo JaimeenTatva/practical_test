@@ -21,10 +21,7 @@ class PhonesController < ApplicationController
             existing_number = AllotedPhoneNumber.where(alloted_number: phone_number)
 
             if existing_number.present?
-                begin
-                    random_phone_number = rand(1111111111..9999999999)
-                    existing_number = AllotedPhoneNumber.where(alloted_number: random_phone_number)
-                end while existing_number.present?
+                random_phone_number = AllotedPhoneNumber.get_random_phone_number
 
                 record = AllotedPhoneNumber.create({alloted_number: random_phone_number})
                 render json: { success: true, message: "The number you requested is already allocated. So the following random number is allocated to you.", phone: record.alloted_number }, status: 200
